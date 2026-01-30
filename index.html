@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>यादव समाज वागड़ चौरासी</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: '#1e3a8a',     // Dark Blue (Primary)
+              brandDark: '#172554', // Deeper Dark Blue
+              linen: '#fff5e6',     // Creamy Background
+              linenDark: '#f5e8d6', // Darker Cream
+              rose: '#ffe1e0',      // Soft Pink
+              alice: '#e0f2ff',     // Soft Blue
+              aero: '#c1ffd7',      // Soft Green
+              navy: '#1e293b',      // Navy for text contrast
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+        background-color: #fff5e6; /* linen */
+        color: #1e293b; /* navy */
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Contrast Helpers */
+      .text-on-light { color: #1e293b; }
+      .text-on-dark { color: #ffffff; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+  </body>
+</html>
