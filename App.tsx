@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { UserView, Village, Member, Bulletin } from './types';
 import { getItems } from './services/firebase';
-import { getDailyQuote, getHindiPanchang } from './services/geminiService';
+import { getDailyQuote, getHindiPanchang } from './services/aiService';
 import { VILLAGES_DB_PATH, MEMBERS_DB_PATH, BULLETIN_DB_PATH, APP_NAME } from './constants';
 
 import Home from './pages/Home';
