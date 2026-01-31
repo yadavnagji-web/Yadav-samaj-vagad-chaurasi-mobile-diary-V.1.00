@@ -242,7 +242,7 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
                 {filteredMems.map(m => (
                   <button key={m.id} onClick={() => startUpdateOTPFlow(m)} className="w-full bg-alice/5 p-4 rounded-2xl border border-alice hover:bg-brand hover:text-white text-left transition-all active:scale-95">
                     <p className="font-black text-sm">{m.name}</p>
-                    <p className="text-[10px] opacity-60 font-bold">पिता: {m.fatherName} | {m.mobile.replace(/.(?=.{4})/g, '*')}</p>
+                    <p className="text-[10px] opacity-60 font-bold">पिता/पति: {m.fatherName} | {m.mobile.replace(/.(?=.{4})/g, '*')}</p>
                   </button>
                 ))}
               </div>
@@ -253,7 +253,7 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
         {step === 1.5 && (
           <form onSubmit={handleNewMobileSubmit} className="space-y-6">
              <div className="bg-alice/20 p-4 rounded-2xl border border-alice mb-4">
-                <p className="text-sm font-black text-navy">{existingMember?.name} (पिता: {existingMember?.fatherName})</p>
+                <p className="text-sm font-black text-navy">{existingMember?.name} (पिता/पति: {existingMember?.fatherName})</p>
              </div>
              <div className="relative">
                 <span className="absolute left-6 top-1/2 -translate-y-1/2 text-brandDark font-black text-lg">+91</span>
