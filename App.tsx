@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserView, Village, Member, Bulletin } from './types';
 import { getItems, getConfig, setConfig } from './services/firebase';
-import { getHindiPanchangFromAPI } from './services/aiService';
+import { getDailyQuoteFromAI } from './services/aiService';
 import { 
   VILLAGES_DB_PATH, 
   MEMBERS_DB_PATH, 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [villages, setVillages] = useState<Village[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [bulletin, setBulletin] = useState<Bulletin | null>(null);
-  const [panchangData, setPanchangData] = useState<string>("लोड हो रहा है...");
+  const [dailyQuote, setDailyQuote] = useState<string>("लोड हो रहा है...");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [urlVillageId, setUrlVillageId] = useState<string | null>(null);
 
@@ -44,25 +44,21 @@ const App: React.FC = () => {
       const activeBulletin = bData.filter(b => b.active).sort((a,b) => b.createdAt - a.createdAt)[0];
       setBulletin(activeBulletin || null);
 
-      // Handle Panchang
+      // Handle Daily Quote (Vichar)
       const today = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Kolkata'}).format(new Date());
-      if (dData && dData.date === today && dData.panchang) {
-        setPanchangData(dData.panchang);
+      if (dData && dData.date === today && dData.quote) {
+        setDailyQuote(dData.quote);
       } else {
-        // Fetch from the new RapidAPI service
         try {
-          const live = await getHindiPanchangFromAPI();
-          if (live && live.text) {
-            setPanchangData(live.text);
-            await setConfig(DAILY_CONTENT_PATH, {
-              date: today,
-              panchang: live.text
-            });
-          } else {
-            setPanchangData("डाटा अनुपलब्ध");
-          }
+          const newQuote = await getDailyQuoteFromAI();
+          setDailyQuote(newQuote);
+          await setConfig(DAILY_CONTENT_PATH, {
+            ...dData,
+            date: today,
+            quote: newQuote
+          });
         } catch (err) {
-          setPanchangData("नेटवर्क एरर");
+          setDailyQuote("शिक्षित बनो, संगठित रहो, संघर्ष करो। — डॉ. बी.आर. अंबेडकर");
         }
       }
     } catch (e) {
@@ -150,7 +146,7 @@ const App: React.FC = () => {
             members={members} 
             bulletin={bulletin} 
             initialVillageId={urlVillageId} 
-            panchang={panchangData}
+            quote={dailyQuote}
           />
         )}
         {view === UserView.REGISTER && <Registration type="REGISTER" villages={villages} members={members} onComplete={async () => { await refreshMembersOnly(); setView(UserView.HOME); }} />}
