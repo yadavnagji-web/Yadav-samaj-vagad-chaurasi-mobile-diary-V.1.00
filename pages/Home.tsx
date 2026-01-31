@@ -61,13 +61,11 @@ const Home: React.FC<HomeProps> = ({ villages, members, bulletin, initialVillage
     <div className="space-y-6 animate-in fade-in duration-500">
       
       {!isBrowsingList && (
-        <div className="bg-white border-2 border-brand/10 p-8 rounded-[32px] shadow-lg relative overflow-hidden text-center group">
-          <div className="relative z-10">
-            <span className="text-[10px] font-black text-brand/40 uppercase tracking-[0.2em] mb-3 block">आज का प्रेरणादायक सुविचार</span>
-            <p className="text-[16px] font-black text-navy leading-relaxed italic mx-auto max-w-[90%]">
-              "{quote || "शिक्षित बनो, संगठित रहो, संघर्ष करो।"}"
-            </p>
-          </div>
+        <div className="bg-white border-2 border-brand/10 p-10 rounded-[40px] shadow-lg relative overflow-hidden flex flex-col items-center justify-center text-center">
+          <span className="text-[10px] font-black text-brand/30 uppercase tracking-[0.3em] mb-4 block">आज का सुविचार</span>
+          <p className="text-[17px] font-black text-navy leading-relaxed italic max-w-[90%]">
+            "{quote || "शिक्षित बनो, संगठित रहो, संघर्ष करो।"}"
+          </p>
         </div>
       )}
 

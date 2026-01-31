@@ -1,10 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Village, Member, Bulletin } from '../types';
-import { ADMIN_EMAIL, ADMIN_PASS, VILLAGES_DB_PATH, MEMBERS_DB_PATH, BULLETIN_DB_PATH, CONFIG_DB_PATH, DAILY_CONTENT_PATH } from '../constants';
+import { ADMIN_EMAIL, ADMIN_PASS, VILLAGES_DB_PATH, MEMBERS_DB_PATH, BULLETIN_DB_PATH, DAILY_CONTENT_PATH } from '../constants';
 import { addItem, removeItem, getItems, setConfig } from '../services/firebase';
-// Fix: Renamed getHindiPanchangFromAI to getHindiPanchangFromAPI to match exported member in services/aiService.ts
-import { getDailyQuoteFromAI, getHindiPanchangFromAPI } from '../services/aiService';
+import { getDailyQuoteFromAI } from '../services/aiService';
 
 interface AdminProps {
   villages: Village[];
@@ -71,18 +70,14 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
     try {
       const todayIST = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Kolkata'}).format(new Date());
       const newQuote = await getDailyQuoteFromAI();
-      // Fix: Changed getHindiPanchangFromAI call to getHindiPanchangFromAPI
-      const pResult = await getHindiPanchangFromAPI();
       
       await setConfig(DAILY_CONTENT_PATH, {
         date: todayIST,
         quote: newQuote,
-        panchang: pResult.text,
-        sources: pResult.sources || []
+        updatedAt: Date.now()
       });
       
-      // Fix: Used double quotes for the outer string to allow single quotes inside for 'Live'
-      alert("डेटा सफलतापूर्वक 'Live' सर्च करके अपडेट कर दिया गया है!");
+      alert("आज का सुविचार सफलतापूर्वक अपडेट कर दिया गया है!");
       window.location.reload(); 
     } catch (e) {
       alert('सिंक करने में त्रुटि: ' + (e as Error).message);
@@ -272,7 +267,7 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
         <TabBtn active={activeTab === 'VILLAGES'} onClick={() => setActiveTab('VILLAGES')} label="गाँव" />
         <TabBtn active={activeTab === 'MEMBERS'} onClick={() => setActiveTab('MEMBERS')} label="सदस्य" />
         <TabBtn active={activeTab === 'BULLETIN'} onClick={() => setActiveTab('BULLETIN')} label="सूचना" />
-        <TabBtn active={activeTab === 'API'} onClick={() => setActiveTab('API')} label="AI सिंक" />
+        <TabBtn active={activeTab === 'API'} onClick={() => setActiveTab('API')} label="सुविचार Sync" />
         <TabBtn active={activeTab === 'BULK'} onClick={() => setActiveTab('BULK')} label="बैकअप" />
       </div>
 
@@ -332,18 +327,13 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
         {activeTab === 'API' && (
           <div className="space-y-6 animate-in fade-in">
              <div className="bg-alice/10 p-5 rounded-3xl border border-alice text-center">
-                <h4 className="text-[11px] font-black uppercase text-brand mb-3">Google Gemini 3 AI सिंक</h4>
+                <h4 className="text-[11px] font-black uppercase text-brand mb-3">AI सुविचार सिंक</h4>
                 <p className="text-[10px] text-navy font-bold leading-relaxed mb-6">
-                  ऐप अब Google Search Grounding का उपयोग करता है। 'Live Sync' बटन दबाने पर AI इंटरनेट पर असली हिंदू पंचांग खोजकर उसे अपडेट करेगा।
+                  नीचे दिए गए बटन को दबाने पर Google Gemini AI डॉ. बी.आर. अंबेडकर का एक नया प्रेरणादायक सुविचार लोड करेगा।
                 </p>
                 <button onClick={handleSyncDailyContent} disabled={syncLoading} className="w-full bg-brand text-white py-5 rounded-2xl font-black text-[11px] uppercase shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3">
-                  {syncLoading ? <span className="animate-spin text-xl">🔄</span> : <span>🌐 Live Sync पंचांग</span>}
+                  {syncLoading ? <span className="animate-spin text-xl">🔄</span> : <span>🌐 Live Sync सुविचार</span>}
                 </button>
-             </div>
-             <div className="p-4 bg-linen/20 rounded-2xl border border-linen">
-                <p className="text-[9px] font-bold text-slate-500 italic">
-                  * नोट: अब आपको मैन्युअल API Key डालने की जरूरत नहीं है, यह ऑटोमैटिक काम करेगा।
-                </p>
              </div>
           </div>
         )}
