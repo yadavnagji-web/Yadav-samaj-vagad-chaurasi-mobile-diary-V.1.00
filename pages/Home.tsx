@@ -7,9 +7,10 @@ interface HomeProps {
   members: Member[];
   bulletin: Bulletin | null;
   initialVillageId?: string | null;
+  panchang?: string;
 }
 
-const Home: React.FC<HomeProps> = ({ villages, members, bulletin, initialVillageId }) => {
+const Home: React.FC<HomeProps> = ({ villages, members, bulletin, initialVillageId, panchang }) => {
   const [selectedVillageId, setSelectedVillageId] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -54,24 +55,65 @@ const Home: React.FC<HomeProps> = ({ villages, members, bulletin, initialVillage
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
+  // Robust parser for Panchang strings
+  const panchangDetails = useMemo(() => {
+    if (!panchang || panchang === "लोड हो रहा है...") return { main: panchang || "लोड हो रहा है...", full: false };
+    
+    const lines = panchang.split('\n');
+    const dateLine = lines.find(l => l.includes('तारीख:'))?.split('तारीख:')[1]?.trim() || "";
+    const dayLine = lines.find(l => l.includes('वार:'))?.split('वार:')[1]?.trim() || "";
+    const infoLine = lines.find(l => l.includes('पंचांग:'))?.split('पंचांग:')[1]?.trim() || "";
+    const naksLine = lines.find(l => l.includes('नक्षत्र:'))?.split('नक्षत्र:')[1]?.trim() || "";
+    
+    if (dayLine || infoLine) {
+      return {
+        date: dateLine,
+        day: dayLine,
+        info: infoLine,
+        nakshatra: naksLine,
+        full: true
+      };
+    }
+    
+    return { main: panchang.split('\n')[0] || panchang, sub: panchang.split('\n')[1] || "", full: false };
+  }, [panchang]);
+
   const isBrowsingList = (selectedVillageId !== 'all' || searchQuery.trim()) && filteredMembers.length > 0;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       
-      {/* Premium Panchang Box - Original Design Restored */}
       {!isBrowsingList && (
-        <div className="bg-white border-2 border-brand/10 p-5 rounded-[32px] flex items-center justify-between shadow-lg relative overflow-hidden group">
+        <div className="bg-white border-2 border-brand/10 p-5 rounded-[32px] shadow-lg relative overflow-hidden group">
           <div className="absolute -right-6 -bottom-6 opacity-[0.05] text-8xl group-hover:scale-110 transition-transform">🕉️</div>
-          <div className="flex flex-col relative z-10">
-            <span className="text-[10px] font-black text-brand/40 uppercase tracking-[0.2em] mb-1">आज का पंचांग</span>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-black text-brand">शनिवार, त्रयोदशी</span>
-              <span className="w-1.5 h-1.5 bg-brand/20 rounded-full"></span>
-              <span className="text-[10px] font-black text-brand/60 uppercase">शुभ दिन</span>
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex flex-col flex-1">
+              <span className="text-[10px] font-black text-brand/40 uppercase tracking-[0.2em] mb-1.5">आज का शुभ पंचांग</span>
+              
+              {panchangDetails.full ? (
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl font-black text-brand">{panchangDetails.day}</span>
+                    <span className="text-[11px] font-bold text-slate-400 bg-alice px-2 py-0.5 rounded-lg">{panchangDetails.date}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-[13px] font-black text-navy leading-tight">
+                      {panchangDetails.info}
+                    </p>
+                    {panchangDetails.nakshatra && (
+                      <p className="text-[10px] font-bold text-slate-400 italic">नक्षत्र: {panchangDetails.nakshatra}</p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-0.5">
+                  <span className="text-lg font-black text-brand block">{panchangDetails.main}</span>
+                  {panchangDetails.sub && <span className="text-[11px] font-bold text-navy/60">{panchangDetails.sub}</span>}
+                </div>
+              )}
             </div>
+            <div className="w-14 h-14 bg-alice rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-white shrink-0 ml-4">🗓️</div>
           </div>
-          <div className="w-14 h-14 bg-alice rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-white relative z-10">🌙</div>
         </div>
       )}
 

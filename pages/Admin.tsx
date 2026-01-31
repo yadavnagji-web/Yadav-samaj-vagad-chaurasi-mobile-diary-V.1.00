@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Village, Member, Bulletin } from '../types';
 import { ADMIN_EMAIL, ADMIN_PASS, VILLAGES_DB_PATH, MEMBERS_DB_PATH, BULLETIN_DB_PATH, CONFIG_DB_PATH, DAILY_CONTENT_PATH } from '../constants';
 import { addItem, removeItem, getItems, setConfig } from '../services/firebase';
-import { getDailyQuoteFromAI, getHindiPanchangFromAI } from '../services/aiService';
+// Fix: Renamed getHindiPanchangFromAI to getHindiPanchangFromAPI to match exported member in services/aiService.ts
+import { getDailyQuoteFromAI, getHindiPanchangFromAPI } from '../services/aiService';
 
 interface AdminProps {
   villages: Village[];
@@ -70,7 +71,8 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
     try {
       const todayIST = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Kolkata'}).format(new Date());
       const newQuote = await getDailyQuoteFromAI();
-      const pResult = await getHindiPanchangFromAI();
+      // Fix: Changed getHindiPanchangFromAI call to getHindiPanchangFromAPI
+      const pResult = await getHindiPanchangFromAPI();
       
       await setConfig(DAILY_CONTENT_PATH, {
         date: todayIST,
@@ -278,7 +280,7 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
         {activeTab === 'VILLAGES' && (
           <div className="space-y-4">
              <div className="flex gap-2">
-                <input type="text" value={newVillage} onChange={e => setNewVillage(e.target.value)} placeholder="नया गाँव" className="flex-1 bg-linen/20 p-3 rounded-2xl border border-linen outline-none text-navy font-black text-xs" />
+                <input type="text" value={newVillage} onChange={e => setNewVillage(e.target.value)} placeholder=" नया गाँव" className="flex-1 bg-linen/20 p-3 rounded-2xl border border-linen outline-none text-navy font-black text-xs" />
                 <button onClick={handleAddVillage} className="bg-brand text-white px-5 rounded-2xl font-black text-lg shadow-md active:scale-90">+</button>
              </div>
              <div className="max-h-60 overflow-y-auto no-scrollbar space-y-1.5">
