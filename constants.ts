@@ -13,5 +13,7 @@ export const FALLBACK_QUOTES = [
 export const VILLAGES_DB_PATH = "villages";
 export const MEMBERS_DB_PATH = "members";
 export const BULLETIN_DB_PATH = "bulletin";
+export const CONFIG_DB_PATH = "config";
+export const DAILY_CONTENT_PATH = "daily_content";
 
 export const OTP_EXPIRY_SEC = 300;

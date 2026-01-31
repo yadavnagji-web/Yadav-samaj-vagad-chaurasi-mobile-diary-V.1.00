@@ -1,0 +1,16 @@
+{
+  "name": "यादव समाज वागड़ चौरासी",
+  "short_name": "यादव समाज",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff5e6",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1041/1041916.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

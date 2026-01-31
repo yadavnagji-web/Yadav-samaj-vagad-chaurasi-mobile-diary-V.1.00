@@ -13,6 +13,26 @@ export const getItems = async <T,>(path: string): Promise<T[]> => {
   }
 };
 
+export const getConfig = async (key: string): Promise<any> => {
+  try {
+    const response = await fetch(`${DB_BASE_URL}/${key}.json`);
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+};
+
+export const setConfig = async (key: string, data: any) => {
+  try {
+    await fetch(`${DB_BASE_URL}/${key}.json`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    console.error(`Firebase SetConfig Error (${key}):`, error);
+  }
+};
+
 export const addItem = async (path: string, data: any) => {
   try {
     const response = await fetch(`${DB_BASE_URL}/${path}.json`, {
@@ -20,7 +40,7 @@ export const addItem = async (path: string, data: any) => {
       body: JSON.stringify(data),
     });
     const result = await response.json();
-    return result.name; // Firebase returns the unique ID in the 'name' field
+    return result.name; 
   } catch (error) {
     console.error(`Firebase Add Error (${path}):`, error);
     throw error;
