@@ -294,8 +294,8 @@ const Admin: React.FC<AdminProps> = ({ villages, members, refreshMembers, refres
              <div className="p-4 bg-alice/10 rounded-3xl border border-alice space-y-3">
                 <h4 className="text-[10px] font-black uppercase tracking-widest text-brand">नया सदस्य जोड़ें</h4>
                 <div className="grid grid-cols-2 gap-2">
-                   <input type="text" placeholder="नाम" value={admMemName} onChange={e => setAdmMemName(e.target.value)} className="bg-white p-2.5 rounded-xl border border-linen text-[11px] font-black" />
-                   <input type="text" placeholder="पिता/पति" value={admMemFather} onChange={e => setAdmMemFather(e.target.value)} className="bg-white p-2.5 rounded-xl border border-linen text-[11px] font-black" />
+                   <input type="text" spellCheck={false} autoComplete="off" placeholder="नाम" value={admMemName} onChange={e => setAdmMemName(e.target.value)} className="bg-white p-2.5 rounded-xl border border-linen text-[11px] font-black" />
+                   <input type="text" spellCheck={false} autoComplete="off" placeholder="पिता/पति" value={admMemFather} onChange={e => setAdmMemFather(e.target.value)} className="bg-white p-2.5 rounded-xl border border-linen text-[11px] font-black" />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                    <input type="tel" placeholder="मोबाइल" value={admMemMobile} onChange={e => setAdmMemMobile(e.target.value)} className="bg-white p-2.5 rounded-xl border border-linen text-[11px] font-black" />

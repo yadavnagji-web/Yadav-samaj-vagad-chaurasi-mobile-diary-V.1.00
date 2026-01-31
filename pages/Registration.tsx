@@ -55,7 +55,6 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
 
   const isHindiStrict = (text: string) => {
     if (!text) return true;
-    // Expanded regex to allow common name punctuation like / . ( ) -
     const isDevanagari = /^[\u0900-\u097F\s./()\-]+$/.test(text);
     return isDevanagari;
   };
@@ -193,7 +192,6 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
     }
   };
 
-  // 1. DELETE UI (Admin Contact)
   if (type === 'DELETE') {
     const selVillageName = villages.find(v => v.id === delVillageId)?.name || '';
     const waMessage = `नमस्ते एडमिन, मैं समाज की डायरी से अपनी जानकारी हटाना चाहता हूँ।\n\nनाम: ${delName}\nपिता/पति: ${delFather}\nगाँव: ${selVillageName}\nहटाया जाने वाला मोबाइल: ${delMobile}`;
@@ -210,8 +208,8 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
         </div>
 
         <div className="space-y-4 text-left">
-          <input type="text" value={delName} onChange={e => setDelName(e.target.value)} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy" placeholder="आपका नाम" />
-          <input type="text" value={delFather} onChange={e => setDelFather(e.target.value)} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy" placeholder="पिता/पति का नाम" />
+          <input type="text" spellCheck={false} autoComplete="off" value={delName} onChange={e => setDelName(e.target.value)} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy" placeholder="आपका नाम" />
+          <input type="text" spellCheck={false} autoComplete="off" value={delFather} onChange={e => setDelFather(e.target.value)} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy" placeholder="पिता/पति का नाम" />
           <input type="tel" maxLength={10} value={delMobile} onChange={e => setDelMobile(e.target.value.replace(/\D/g, ''))} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy" placeholder="मोबाइल नंबर" />
           <select value={delVillageId} onChange={e => setDelVillageId(e.target.value)} className="w-full bg-linen/20 p-4 rounded-2xl border-2 border-linen font-black text-sm outline-none text-navy appearance-none">
             <option value="">-- गाँव चुनें --</option>
@@ -224,7 +222,6 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
     );
   }
 
-  // 2. UPDATE Flow UI
   if (type === 'UPDATE') {
     return (
       <div className="bg-white p-8 rounded-[40px] shadow-2xl border-2 border-linen space-y-6">
@@ -273,7 +270,6 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
     );
   }
 
-  // 3. REGISTER Flow UI
   return (
     <div className="bg-white p-8 rounded-[40px] shadow-2xl border-2 border-linen">
       <h2 className="text-xl font-black text-brandDark mb-8 text-center uppercase tracking-widest">नया पंजीकरण</h2>
@@ -298,8 +294,8 @@ const Registration: React.FC<RegistrationProps> = ({ type, villages, members, on
 
       {step === 3 && (
         <form onSubmit={handleRegisterFinalSubmit} className="space-y-6 animate-in slide-in-from-bottom">
-          <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-linen/20 border-2 border-linen rounded-2xl p-4 text-navy font-black outline-none" placeholder="आपका पूरा नाम (हिंदी)" />
-          <input type="text" required value={fatherName} onChange={(e) => setFatherName(e.target.value)} className="w-full bg-linen/20 border-2 border-linen rounded-2xl p-4 text-navy font-black outline-none" placeholder="पिता/पति का नाम (हिंदी)" />
+          <input type="text" spellCheck={false} autoComplete="off" required value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-linen/20 border-2 border-linen rounded-2xl p-4 text-navy font-black outline-none" placeholder="आपका पूरा नाम (हिंदी)" />
+          <input type="text" spellCheck={false} autoComplete="off" required value={fatherName} onChange={(e) => setFatherName(e.target.value)} className="w-full bg-linen/20 border-2 border-linen rounded-2xl p-4 text-navy font-black outline-none" placeholder="पिता/पति का नाम (हिंदी)" />
           <select required value={villageId} onChange={(e) => setVillageId(e.target.value)} className="w-full bg-linen/20 border-2 border-linen rounded-2xl p-4 text-navy font-black outline-none appearance-none">
             <option value="">-- गाँव चुनें --</option>
             {villages.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
